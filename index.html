@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>EXP_4</title>
+    <title>EXP_5</title>
     <style>
         html {
           height: 100%;
@@ -20,18 +20,14 @@
     <script src="libs/three.js"></script>
     <script src="libs/dat.gui.min.js"></script>
     <script src="libs/stats.min.js"></script>
-    <script src="libs/tween.min.js"></script>
-    <script src="libs/OrbitControls.js"></script>
     <script type="x-shader/x-vertex" id="vertexShader">
-
-        attribute float displacement;
         varying vec3 vNormal;
 
         void main() {
 
             vNormal = normal;
 
-            vec3 newPosition = position + normal * vec3(displacement);
+            // vec3 newPosition = position + normal * vec3(displacement);
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 
@@ -44,13 +40,13 @@
 
         }
     </script>
-    <script src="js/planeCreator.js"></script>
     <script src="js/getPosition.js"></script>
-    <script src="js/wave.js"></script>
     <script src="js/main.js"></script>
 </head>
 
 
 <body>
+    <div id="exp">        
+    </div>
 </body>
 </html>
