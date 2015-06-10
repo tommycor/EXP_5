@@ -1,82 +1,20 @@
-
-var renderer;
-var scene;
-var camera;
-
-function initThree(){
-
-    // //// INIT
-    // scene = new THREE.Scene();
-    // camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 5000);
-
-    // ////RENDERER
-    // renderer = new THREE.WebGLRenderer();
-    // renderer.setClearColor(0x000000, 1.0);
-    // renderer.setSize(window.innerWidth, window.innerHeight);
-    // renderer.shadowMapEnabled = true;
-
-    // // position and point the camera to the center of the scene
-    // camera.position.x = 500;
-    // camera.position.y = 40;
-    // camera.position.z = 1000;
-    // camera.lookAt( scene.position );
-
-    // // add spotlight for the shadows
-    // var spotLight = new THREE.SpotLight(0xffffff);
-    // spotLight.position.set(10, 20, 20);
-    // spotLight.shadowCameraNear = 20;
-    // spotLight.shadowCameraFar = 50;
-    // spotLight.castShadow = true;
-    // scene.add(spotLight);
-
-    // scene.add(new THREE.AmbientLight(0xffffff));
-
-    // var geometry = new THREE.SphereGeometry(800, 80, 80);
-
-    // var material = new THREE.MeshLambertMaterial( {
-    //     wireframe: true,
-    //     color: 'white'
-    // });
-
-    // Mesh = new THREE.Mesh(geometry, material);
-    // scene.add(Mesh);
-
-    // document.body.appendChild(renderer.domElement);
-
-    // control = new function(){
-    //     this.camX = 1500;
-    //     this.camY = 1500;
-    //     this.camZ = 1500;
-    // };
-    // addControlGui(control);
-    // addStatsObject();
-
-    // render();
-
-    // console.log("Initialazing!");
-
-    // window.addEventListener('mousemove', createWave, false);
-    window.addEventListener('resize', handleResize, false);
-
-}
-
-window.onload = initThree;
-
-
-
 window.onload = function() {
     var abtract = new draw();
+
+    // requestAnimationFrame(abtract.render);
 }
 
 var draw = function() {
-    var renderer;
-    var scene;
-    var camera;
+    // var renderer;
+    // var scene;
+    // var camera;
 
     this.init();
 }
 
 draw.prototype.init = function(renderer, scene, camera){
+
+    this.render = this.render.bind(this);
 
     this.container = document.getElementById('exp');
     // this.container = document;
@@ -107,7 +45,7 @@ draw.prototype.init = function(renderer, scene, camera){
 
     this.scene.add(new THREE.AmbientLight(0xffffff));
 
-    this.geometry = new THREE.SphereGeometry(800, 80, 80);
+    this.geometry = new THREE.SphereGeometry(800, 100, 100);
 
     this.material = new THREE.MeshLambertMaterial( {
         wireframe: true,
@@ -139,7 +77,7 @@ draw.prototype.render = function() {
     this.camera.lookAt( this.scene.position );
 
     this.stats.update();
-    this.renderer.render(scene, camera);
+    this.renderer.render(this.scene, this.camera);
 
     requestAnimationFrame(this.render);
 }
