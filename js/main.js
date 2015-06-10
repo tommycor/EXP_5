@@ -110,8 +110,9 @@ draw.prototype.update = function(event) {
 
     if (typeof mouse !== 'undefined') {
         this.uniforms.mouse.value = new THREE.Vector3( mouse.x, mouse.y, mouse.z );
-
-        console.log(this.uniforms.mouse)
+    }
+    else {
+        this.uniforms.mouse.value = new THREE.Vector3( 500000, 500000, 500000 );
     }
 }
 
