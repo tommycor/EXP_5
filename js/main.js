@@ -57,6 +57,10 @@ draw.prototype.init = function(renderer, scene, camera){
       mouse: {
         type: 'v3',
         value: new THREE.Vector3( 0, 0, 0 )
+      },
+      variable: {
+        type: 'f',
+        value: Math.random() * 10
       }
     };
 
@@ -95,6 +99,8 @@ draw.prototype.render = function() {
 
     this.stats.update();
     this.renderer.render(this.scene, this.camera);
+
+    this.uniforms.variable.value = Math.random() * 10;
 
     requestAnimationFrame(this.render);
 }
