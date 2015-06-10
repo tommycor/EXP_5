@@ -23,20 +23,28 @@
     <script type="x-shader/x-vertex" id="vertexShader">
         varying vec3 vNormal;
 
+        uniform vec3 mouse;
+
         void main() {
 
             vNormal = normal;
 
-            // vec3 newPosition = position + normal * vec3(displacement);
+            float distance = distance(mouse, position);
+
+            vec3 newPosition = position + normal * vec3(distance);
+
+            // vec3 newPosition = position + vec3(100);
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+
+            // gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
         }
     </script>
     <script type="x-shader/x-vertex" id="fragmentShader">
         void main() {
 
-            gl_FragColor = vec4(1, 1, 1, 0.5);
+            gl_FragColor = vec4(1, 1, 1, 1);
 
         }
     </script>

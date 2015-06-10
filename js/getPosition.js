@@ -1,4 +1,4 @@
-function getPosition(event, mesh)
+function getPosition(event, mesh, camera)
 {
 
     // On détecte la position de la souris
@@ -11,9 +11,9 @@ function getPosition(event, mesh)
     // console.log(intersect);
 
     if(intersect.length >= 1)
-    return {
-		x: intersect[0].point.x, 
-		y: intersect[0].point.y, 
-		z: intersect[0].point.z
-    };
+        return {
+    		x: intersect[0].point.x, 
+    		y: intersect[0].point.y, 
+    		z: intersect[0].point.z
+        };
 }

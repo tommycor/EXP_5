@@ -1,6 +1,11 @@
 window.onload = function() {
     var abtract = new draw();
 
+    window.addEventListener('mousemove', abtract.update, false);
+
+    window.addEventListener('resize', abtract.handleResize, false);
+
+
     // requestAnimationFrame(abtract.render);
 }
 
@@ -15,6 +20,8 @@ var draw = function() {
 draw.prototype.init = function(renderer, scene, camera){
 
     this.render = this.render.bind(this);
+    this.handleResize = this.handleResize.bind(this);
+    this.update = this.update.bind(this);
 
     this.container = document.getElementById('exp');
     // this.container = document;
@@ -45,11 +52,19 @@ draw.prototype.init = function(renderer, scene, camera){
 
     this.scene.add(new THREE.AmbientLight(0xffffff));
 
-    this.geometry = new THREE.SphereGeometry(800, 100, 100);
+    this.geometry = new THREE.SphereGeometry(500, 120, 100);
+    this.uniforms = {
+      mouse: {
+        type: 'v3',
+        value: new THREE.Vector3( 0, 0, 0 )
+      }
+    };
 
-    this.material = new THREE.MeshLambertMaterial( {
+    this.material = new THREE.ShaderMaterial( {
         wireframe: true,
-        color: 'white'
+        uniforms: this.uniforms,
+        vertexShader: document.getElementById( 'vertexShader' ).textContent,
+        fragmentShader: document.getElementById( 'fragmentShader' ).textContent
     });
 
     this.Mesh = new THREE.Mesh(this.geometry, this.material);
@@ -76,11 +91,25 @@ draw.prototype.render = function() {
     this.camera.position.z = this.control.camZ;
     this.camera.lookAt( this.scene.position );
 
+    // console.log(this.uniforms.mouse.value);
+
     this.stats.update();
     this.renderer.render(this.scene, this.camera);
 
     requestAnimationFrame(this.render);
 }
+
+draw.prototype.update = function(event) {
+    var mouse = getPosition(event, this.Mesh, this.camera);
+
+    if (typeof mouse !== 'undefined') {
+        this.uniforms.mouse.value = new THREE.Vector3( mouse.x, mouse.y, mouse.z );
+
+        console.log(this.uniforms.mouse)
+    }
+}
+
+
 
 draw.prototype.addControlGui = function(controlObject) {
     var gui = new dat.GUI();
