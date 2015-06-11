@@ -1,27 +1,32 @@
 window.onload = function() {
-    var abtract = new draw();
+    var abtract = new draw(10);
 
     window.addEventListener('mousemove', abtract.update, false);
+    window.addEventListener('click', abtract.consoleBitch, false);
 
     window.addEventListener('resize', abtract.handleResize, false);
 
 
     // requestAnimationFrame(abtract.render);
-}
+};
 
-var draw = function() {
+var draw = function(reduceSpeed) {
     // var renderer;
     // var scene;
     // var camera;
 
     this.init();
-}
+    this.reduceSpeed = reduceSpeed;
+};
 
-draw.prototype.init = function(renderer, scene, camera){
+draw.prototype.init = function(){
 
     this.render = this.render.bind(this);
     this.handleResize = this.handleResize.bind(this);
     this.update = this.update.bind(this);
+    this.consoleBitch = this.consoleBitch.bind(this);
+
+    this.mouseout = true;
 
     this.container = document.getElementById('exp');
     // this.container = document;
@@ -32,7 +37,7 @@ draw.prototype.init = function(renderer, scene, camera){
 
     ////RENDERER
     this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setClearColor(0x000000, 1.0);
+    this.renderer.setClearColor(0x888888, 1.0);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMapEnabled = true;
 
@@ -52,15 +57,15 @@ draw.prototype.init = function(renderer, scene, camera){
 
     this.scene.add(new THREE.AmbientLight(0xffffff));
 
-    this.geometry = new THREE.SphereGeometry(500, 120, 100);
+    this.geometry = new THREE.SphereGeometry(500, 50, 30);
     this.uniforms = {
       mouse: {
         type: 'v3',
         value: new THREE.Vector3( 0, 0, 0 )
       },
-      variable: {
+      time: {
         type: 'f',
-        value: Math.random() * 10
+        value: 0.0
       }
     };
 
@@ -87,7 +92,7 @@ draw.prototype.init = function(renderer, scene, camera){
     this.render();
 
     console.log("Initialazing!");
-}
+};
 
 draw.prototype.render = function() {
     this.camera.position.x = this.control.camX;
@@ -100,21 +105,32 @@ draw.prototype.render = function() {
     this.stats.update();
     this.renderer.render(this.scene, this.camera);
 
-    this.uniforms.variable.value = Math.random() * 10;
+    this.uniforms.time.value ++;
+
+    if ( this.mouseout === true ){
+        this.uniforms.mouse.value.x -= this.reduceSpeed;
+        this.uniforms.mouse.value.y -= this.reduceSpeed;
+        this.uniforms.mouse.value.z -= this.reduceSpeed;
+    }
 
     requestAnimationFrame(this.render);
-}
+};
 
 draw.prototype.update = function(event) {
     var mouse = getPosition(event, this.Mesh, this.camera);
 
     if (typeof mouse !== 'undefined') {
         this.uniforms.mouse.value = new THREE.Vector3( mouse.x, mouse.y, mouse.z );
+        this.mouseout = false;
     }
     else {
-        this.uniforms.mouse.value = new THREE.Vector3( 500000, 500000, 500000 );
+        this.mouseout = true;
     }
-}
+};
+
+draw.prototype.consoleBitch = function(event) {
+    console.log(this.uniforms.mouse.value.x);
+};
 
 
 
@@ -123,7 +139,7 @@ draw.prototype.addControlGui = function(controlObject) {
     gui.add(controlObject, 'camX', -2000, 2000);
     gui.add(controlObject, 'camY', -2000, 2000);
     gui.add(controlObject, 'camZ', -2000, 2000);
-}
+};
 
 draw.prototype.addStatsObject = function() {
     this.stats = new Stats();
@@ -134,10 +150,10 @@ draw.prototype.addStatsObject = function() {
     this.stats.domElement.style.top = '0px';
 
     document.body.appendChild(this.stats.domElement);
-}
+};
 
 draw.prototype.handleResize = function() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+};

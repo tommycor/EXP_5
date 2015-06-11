@@ -197,6 +197,8 @@
 
         uniform vec3 mouse;
 
+        uniform float time;
+
         varying float displacement;
 
         float rand(vec2 co){
@@ -205,13 +207,23 @@
 
         void main() {
 
-            float upper = 250.0;
+            float upper = 800.0;
+            float multiplicator = 3.0;
 
             vNormal = normal;
 
             float distance = distance(mouse, position);
 
-            displacement = ( -( distance ) + upper ) * rand( uv ) ;
+            if (distance > ( upper / multiplicator ) ) {
+                displacement = 50.0 * pnoise( 0.05 * position + 0.005 * time, vec3( 1.0 ) ) ;
+            }
+            else {
+                displacement = ( -( distance * multiplicator ) + upper ) * pnoise( 0.05 * position + 0.01 * time, vec3( 100.0 ) ) ;
+                // displacement = bosse * noise
+            }              
+
+            // displacement = ( -( distance ) + upper ) * pnoise( 0.05 * position, vec3( 1.0 ) ) ;
+            // displacement = ( -( distance )  ) ;
 
             if (displacement <= 0.0) {
                 displacement = 0.0;
@@ -231,9 +243,10 @@
 
         void main() {
 
-            float color = 1.0 - smoothstep(0.0, 100.0, displacement);
+            float color = 1.0 - smoothstep(0.0, 80.0, displacement);
 
             gl_FragColor = vec4(color, color, color, 1);
+            // gl_FragColor = vec4(1, 1, 1, 1);
 
         }
 
