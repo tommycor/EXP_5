@@ -1,5 +1,5 @@
 window.onload = function() {
-    var abtract = new draw(10);
+    var abtract = new draw();
 
     window.addEventListener('mousemove', abtract.update, false);
     window.addEventListener('click', abtract.consoleBitch, false);
@@ -10,13 +10,9 @@ window.onload = function() {
     // requestAnimationFrame(abtract.render);
 };
 
-var draw = function(reduceSpeed) {
-    // var renderer;
-    // var scene;
-    // var camera;
-
+var draw = function() {
     this.init();
-    this.reduceSpeed = reduceSpeed;
+    this.reduceSpeed = 7;
 };
 
 draw.prototype.init = function(){
@@ -26,7 +22,7 @@ draw.prototype.init = function(){
     this.update = this.update.bind(this);
     this.consoleBitch = this.consoleBitch.bind(this);
 
-    this.mouseout = true;
+    this.mouseout = false;
 
     this.container = document.getElementById('exp');
     // this.container = document;
@@ -57,7 +53,7 @@ draw.prototype.init = function(){
 
     this.scene.add(new THREE.AmbientLight(0xffffff));
 
-    this.geometry = new THREE.SphereGeometry(500, 50, 30);
+    this.geometry = new THREE.SphereGeometry(700, 100, 80);
     this.uniforms = {
       mouse: {
         type: 'v3',

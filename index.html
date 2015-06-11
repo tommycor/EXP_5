@@ -243,9 +243,13 @@
 
         void main() {
 
-            float color = 1.0 - smoothstep(0.0, 80.0, displacement);
+            float color = smoothstep( -80.0, 200.0, displacement);
 
-            gl_FragColor = vec4(color, color, color, 1);
+            float r = 1.0 - smoothstep(0.0, 255.0, 45.0 * color);
+            float v = 1.0 - smoothstep(0.0, 255.0, 110.0 * color);
+            float b = 1.0 - smoothstep(0.0, 255.0, 230.0 * color);
+
+            gl_FragColor = vec4(r, v, b, 1);
             // gl_FragColor = vec4(1, 1, 1, 1);
 
         }
